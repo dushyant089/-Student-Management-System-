@@ -70,13 +70,14 @@ app.get("/api/students", async (req, res) => {
 
         res.json(students);
 
-    } catch (error) {
-        console.error("Error fetching students:", error);
+   } catch (error) {
+    console.error("Error fetching students:", error.message);
 
-        res.status(500).json({
-            message: "Error fetching students"
-        });
-    }
+    res.status(500).json({
+        message: "Error fetching students",
+        error: error.message
+    });
+}
 });
 
 // Add Student
