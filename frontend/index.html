@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>Student Management System</h2>
+        <button onclick="showForm()">+ Add Student</button>
+    </nav>
+
+    <main class="container">
+
+        <section class="hero">
+            <div>
+                <h1>Student Dashboard</h1>
+                <p>Manage your students easily and efficiently.</p>
+            </div>
+
+           <div class="stats">
+
+    <div class="stat-card">
+        <h3 id="studentCount">0</h3>
+        <p>Total Students</p>
+    </div>
+
+    <div class="stat-card">
+        <h3 id="courseCount">0</h3>
+        <p>Total Courses</p>
+    </div>
+
+    <div class="stat-card">
+        <h3 id="latestStudent">-</h3>
+        <p>Latest Student</p>
+    </div>
+
+</div>
+        </section>
+
+        <section class="student-section">
+
+            <div class="section-header">
+                <h2>Students</h2>
+
+                <div class="filters">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search student..."
+        onkeyup="searchStudents()"
+    >
+
+    <select id="courseFilter" onchange="filterStudents()">
+        <option value="all">All Courses</option>
+    </select>
+
+    <select id="sortFilter" onchange="sortStudents()">
+        <option value="default">Sort By</option>
+        <option value="nameAsc">Name A-Z</option>
+        <option value="nameDesc">Name Z-A</option>
+        <option value="courseAsc">Course A-Z</option>
+        <option value="courseDesc">Course Z-A</option>
+    </select>
+
+</div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="studentTable">
+                        <tr>
+                            <td colspan="6" class="empty">
+                                No students added yet.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <div class="modal" id="studentModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>Add Student</h2>
+                <span onclick="closeForm()">&times;</span>
+            </div>
+
+            <form id="studentForm">
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Student Name"
+                    required
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    required
+                >
+
+                <input
+                    type="text"
+                    id="course"
+                    placeholder="Course"
+                    required
+                >
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Phone Number"
+                    required
+                >
+
+                <button type="submit">Add Student</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
