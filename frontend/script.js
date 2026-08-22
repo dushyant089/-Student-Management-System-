@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/students";
+const API_URL = "https://student-management-system-r5qx.onrender.com/api/students";
 
 const modal = document.getElementById("studentModal");
 const form = document.getElementById("studentForm");
