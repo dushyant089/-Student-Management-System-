@@ -1,465 +1,885 @@
-const API_URL = "https://student-management-system-r5qx.onrender.com/api/students";
+// ======================================================
+// STUDENT MANAGEMENT SYSTEM
+// Frontend JavaScript
+// ======================================================
+
+// IMPORTANT:
+// Ye tumhara existing Render backend hai.
+// Isko change mat karna.
+
+const API_URL =
+    "https://student-management-system-r5qx.onrender.com/api/students";
+
 
 const modal = document.getElementById("studentModal");
 const form = document.getElementById("studentForm");
 
 let students = [];
 
-// ================================
-// LOAD STUDENTS
-// ================================
+
+// ======================================================
+// LOAD STUDENTS FROM BACKEND
+// ======================================================
 
 async function loadStudents() {
+
     try {
+
         const response = await fetch(API_URL);
 
         if (!response.ok) {
-            throw new Error("Failed to fetch students");
+            throw new Error(
+                `Server error: ${response.status}`
+            );
         }
 
         students = await response.json();
 
+        console.log(
+            "Students loaded:",
+            students
+        );
+
         updateCourseFilter();
+
         displayStudents();
 
     } catch (error) {
-        console.error("Error loading students:", error);
-        alert("Backend se connection nahi ho raha.");
-    }
-}
 
+        console.error(
+            "Backend connection error:",
+            error
+        );
 
-// ================================
-// OPEN / CLOSE FORM
-// ================================
+        const table =
+            document.getElementById("studentTable");
 
-function showForm() {
-    modal.style.display = "flex";
-}
+        if (table) {
 
-function closeForm() {
-    modal.style.display = "none";
-}
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty">
 
+                        <div>⚠️</div>
 
-// ================================
-// ADD STUDENT
-// ================================
+                        <strong>
+                            Unable to load students
+                        </strong>
 
-form.addEventListener("submit", async function (e) {
+                        <span>
+                            Please check your backend connection.
+                        </span>
 
-    e.preventDefault();
+                    </td>
+                </tr>
+            `;
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const course = document.getElementById("course").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-
-    // Empty field validation
-    if (!name || !email || !course || !phone) {
-        alert("Please fill all fields.");
-        return;
-    }
-
-    // Email validation
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    // Phone validation
-    if (!/^\d{10}$/.test(phone)) {
-        alert("Phone number must contain exactly 10 digits.");
-        return;
-    }
-
-    const student = {
-        name: name,
-        email: email,
-        course: course,
-        phone: phone
-    };
-
-    try {
-
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(student)
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-            alert(result.message || "Student add nahi ho raha.");
-            return;
         }
 
-        form.reset();
-
-        closeForm();
-
-        await loadStudents();
-
-        alert("Student successfully added!");
-
-    } catch (error) {
-
-        console.error("Error adding student:", error);
-
-        alert("Backend se connection nahi ho raha.");
     }
-});
+
+}
 
 
-// ================================
+// ======================================================
+// SHOW ADD STUDENT MODAL
+// ======================================================
+
+function showForm() {
+
+    if (!modal) return;
+
+    modal.style.display = "flex";
+
+}
+
+
+// ======================================================
+// CLOSE MODAL
+// ======================================================
+
+function closeForm() {
+
+    if (!modal) return;
+
+    modal.style.display = "none";
+
+}
+
+
+// ======================================================
+// ADD STUDENT
+// ======================================================
+
+if (form) {
+
+    form.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document
+                    .getElementById("name")
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+
+            const course =
+                document
+                    .getElementById("course")
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById("phone")
+                    .value
+                    .trim();
+
+
+            if (
+                !name ||
+                !email ||
+                !course ||
+                !phone
+            ) {
+
+                alert(
+                    "Please fill all fields."
+                );
+
+                return;
+
+            }
+
+
+            const student = {
+
+                name: name,
+
+                email: email,
+
+                course: course,
+
+                phone: phone
+
+            };
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        API_URL,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(student)
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        result.message ||
+                        "Unable to add student."
+                    );
+
+                    return;
+
+                }
+
+
+                alert(
+                    "Student added successfully!"
+                );
+
+
+                form.reset();
+
+                closeForm();
+
+                await loadStudents();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Add student error:",
+                    error
+                );
+
+                alert(
+                    "Backend connection failed."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// ======================================================
 // DISPLAY STUDENTS
-// ================================
+// ======================================================
 
 function displayStudents(data = students) {
 
-    const table = document.getElementById("studentTable");
+    const table =
+        document.getElementById(
+            "studentTable"
+        );
 
-    // Total students
-    document.getElementById("studentCount").textContent =
-        students.length;
 
-    // Total courses
+    if (!table) return;
+
+
+    // --------------------------------------------------
+    // DASHBOARD STATISTICS
+    // --------------------------------------------------
+
+    const studentCount =
+        document.getElementById(
+            "studentCount"
+        );
+
+    const activeStudents =
+        document.getElementById(
+            "activeStudents"
+        );
+
+    const courseCount =
+        document.getElementById(
+            "courseCount"
+        );
+
+    const latestStudent =
+        document.getElementById(
+            "latestStudent"
+        );
+
+
+    if (studentCount) {
+
+        studentCount.textContent =
+            students.length;
+
+    }
+
+
+    if (activeStudents) {
+
+        activeStudents.textContent =
+            students.length;
+
+    }
+
+
     const courses = [
+
         ...new Set(
-            students.map(student => student.course)
+
+            students
+
+                .map(
+                    student =>
+                        student.course
+                )
+
+                .filter(Boolean)
+
         )
+
     ];
 
-    document.getElementById("courseCount").textContent =
-        courses.length;
 
-    // Latest student
-    document.getElementById("latestStudent").textContent =
-        students.length > 0
-            ? students[students.length - 1].name
-            : "-";
+    if (courseCount) {
+
+        courseCount.textContent =
+            courses.length;
+
+    }
 
 
-    if (data.length === 0) {
+    if (latestStudent) {
+
+        latestStudent.textContent =
+            students.length > 0
+                ? students[0].name
+                : "-";
+
+    }
+
+
+    // --------------------------------------------------
+    // EMPTY TABLE
+    // --------------------------------------------------
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
 
         table.innerHTML = `
+
             <tr>
-                <td colspan="6" class="empty">
-                    No students found.
+
+                <td
+                    colspan="6"
+                    class="empty">
+
+                    <div>
+                        🎓
+                    </div>
+
+                    <strong>
+                        No students found
+                    </strong>
+
+                    <span>
+                        Add your first student to get started.
+                    </span>
+
                 </td>
+
             </tr>
+
         `;
 
         return;
+
     }
 
 
-    table.innerHTML = data.map((student, index) => `
+    // --------------------------------------------------
+    // CREATE STUDENT ROWS
+    // --------------------------------------------------
 
-        <tr>
+    table.innerHTML = data
+        .map(
+            (student, index) => {
 
-            <td>${index + 1}</td>
 
-            <td>${student.name}</td>
+                // Student initials
 
-            <td>${student.email}</td>
+                const initials =
+                    student.name
+                        .split(" ")
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map(
+                            word =>
+                                word[0]
+                        )
+                        .join("")
+                        .toUpperCase();
 
-            <td>${student.course}</td>
 
-            <td>${student.phone}</td>
+                return `
 
-            <td>
+                    <tr>
 
-                <button
-                    class="edit-btn"
-                    onclick="editStudent('${student._id}')">
-                    Edit
-                </button>
+                        <td>
+                            ${index + 1}
+                        </td>
 
-                <button
-                    class="delete-btn"
-                    onclick="deleteStudent('${student._id}')">
-                    Delete
-                </button>
 
-            </td>
+                        <td>
 
-        </tr>
+                            <div
+                                class="student-name">
 
-    `).join("");
+                                <div
+                                    class="avatar">
+
+                                    ${initials}
+
+                                </div>
+
+
+                                <strong>
+
+                                    ${escapeHTML(
+                                        student.name
+                                    )}
+
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                student.email
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="course-badge">
+
+                                ${escapeHTML(
+                                    student.course
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                student.phone
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <div
+                                class="action-wrap">
+
+
+                                <button
+                                    class="edit-btn"
+                                    onclick="editStudent('${student._id}')">
+
+                                    ✎ Edit
+
+                                </button>
+
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="deleteStudent('${student._id}')">
+
+                                    Delete
+
+                                </button>
+
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        )
+        .join("");
+
 }
 
 
-// ================================
+// ======================================================
 // EDIT STUDENT
-// ================================
+// ======================================================
 
 async function editStudent(id) {
 
-    const student = students.find(
-        s => s._id === id
-    );
+    const student =
+        students.find(
+            item =>
+                item._id === id
+        );
+
 
     if (!student) {
-        alert("Student not found.");
+
+        alert(
+            "Student not found."
+        );
+
         return;
+
     }
 
 
-    const name = prompt(
-        "Enter student name:",
-        student.name
-    );
+    const name =
+        prompt(
+            "Student Name:",
+            student.name
+        );
+
 
     if (name === null) return;
 
 
-    const email = prompt(
-        "Enter email:",
-        student.email
-    );
+    const email =
+        prompt(
+            "Email:",
+            student.email
+        );
+
 
     if (email === null) return;
 
 
-    const course = prompt(
-        "Enter course:",
-        student.course
-    );
+    const course =
+        prompt(
+            "Course:",
+            student.course
+        );
+
 
     if (course === null) return;
 
 
-    const phone = prompt(
-        "Enter phone:",
-        student.phone
-    );
+    const phone =
+        prompt(
+            "Phone:",
+            student.phone
+        );
+
 
     if (phone === null) return;
 
 
-    // Validation
-
-    if (!name.trim() ||
+    if (
+        !name.trim() ||
         !email.trim() ||
         !course.trim() ||
-        !phone.trim()) {
+        !phone.trim()
+    ) {
 
-        alert("All fields are required.");
-        return;
-    }
-
-
-    const emailPattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(email)) {
-
-        alert("Please enter a valid email.");
+        alert(
+            "All fields are required."
+        );
 
         return;
-    }
 
-
-    if (!/^\d{10}$/.test(phone)) {
-
-        alert("Phone number must contain exactly 10 digits.");
-
-        return;
     }
 
 
     const updatedStudent = {
 
-        name: name.trim(),
+        name:
+            name.trim(),
 
-        email: email.trim().toLowerCase(),
+        email:
+            email.trim(),
 
-        course: course.trim(),
+        course:
+            course.trim(),
 
-        phone: phone.trim()
+        phone:
+            phone.trim()
 
     };
 
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/${id}`,
-            {
-                method: "PUT",
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+                    method: "PUT",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body: JSON.stringify(updatedStudent)
-            }
-        );
+                    body:
+                        JSON.stringify(
+                            updatedStudent
+                        )
+                }
+            );
 
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
 
         if (!response.ok) {
 
             alert(
                 result.message ||
-                "Student update nahi ho raha."
+                "Unable to update student."
             );
 
             return;
+
         }
+
+
+        alert(
+            "Student updated successfully!"
+        );
 
 
         await loadStudents();
 
-        alert("Student updated successfully!");
 
     } catch (error) {
 
         console.error(
-            "Error updating student:",
+            "Update error:",
             error
         );
 
         alert(
-            "Backend se connection nahi ho raha."
+            "Backend connection failed."
         );
+
     }
+
 }
 
 
-// ================================
+// ======================================================
 // DELETE STUDENT
-// ================================
+// ======================================================
 
 async function deleteStudent(id) {
 
-    const confirmDelete = confirm(
-        "Are you sure you want to delete this student?"
-    );
+    const student =
+        students.find(
+            item =>
+                item._id === id
+        );
 
-    if (!confirmDelete) {
-        return;
-    }
+
+    const studentName =
+        student
+            ? student.name
+            : "this student";
+
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to delete ${studentName}?`
+        );
+
+
+    if (!confirmed) return;
 
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/${id}`,
-            {
-                method: "DELETE"
-            }
-        );
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
 
 
-        const result = await response.json();
+        const result =
+            await response.json();
 
 
         if (!response.ok) {
 
             alert(
                 result.message ||
-                "Student delete nahi ho raha."
+                "Unable to delete student."
             );
 
             return;
+
         }
+
+
+        alert(
+            "Student deleted successfully!"
+        );
 
 
         await loadStudents();
 
-        alert("Student deleted successfully!");
 
     } catch (error) {
 
         console.error(
-            "Error deleting student:",
+            "Delete error:",
             error
         );
 
         alert(
-            "Backend se connection nahi ho raha."
+            "Backend connection failed."
         );
+
     }
+
 }
 
 
-// ================================
+// ======================================================
 // SEARCH STUDENTS
-// ================================
+// ======================================================
 
 function searchStudents() {
 
+    const searchInput =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    const courseFilter =
+        document.getElementById(
+            "courseFilter"
+        );
+
+
+    if (!searchInput) return;
+
+
     const search =
-        document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase();
+        searchInput.value
+            .toLowerCase()
+            .trim();
 
 
     const selectedCourse =
-        document
-            .getElementById("courseFilter")
-            .value;
+        courseFilter
+            ? courseFilter.value
+            : "all";
 
 
     const filtered =
-        students.filter(student => {
-
-            const matchesSearch =
-                student.name
-                    .toLowerCase()
-                    .includes(search) ||
-
-                student.email
-                    .toLowerCase()
-                    .includes(search) ||
-
-                student.course
-                    .toLowerCase()
-                    .includes(search);
+        students.filter(
+            student => {
 
 
-            const matchesCourse =
-                selectedCourse === "all" ||
+                const name =
+                    String(
+                        student.name || ""
+                    )
+                    .toLowerCase();
 
-                student.course === selectedCourse;
+
+                const email =
+                    String(
+                        student.email || ""
+                    )
+                    .toLowerCase();
 
 
-            return (
-                matchesSearch &&
-                matchesCourse
-            );
-        });
+                const course =
+                    String(
+                        student.course || ""
+                    )
+                    .toLowerCase();
+
+
+                const phone =
+                    String(
+                        student.phone || ""
+                    )
+                    .toLowerCase();
+
+
+                const matchesSearch =
+
+                    name.includes(search) ||
+
+                    email.includes(search) ||
+
+                    course.includes(search) ||
+
+                    phone.includes(search);
+
+
+                const matchesCourse =
+
+                    selectedCourse ===
+                        "all" ||
+
+                    student.course ===
+                        selectedCourse;
+
+
+                return (
+                    matchesSearch &&
+                    matchesCourse
+                );
+
+            }
+        );
 
 
     displayStudents(filtered);
+
 }
 
 
-// ================================
-// COURSE FILTER
-// ================================
+// ======================================================
+// UPDATE COURSE FILTER
+// ======================================================
 
 function updateCourseFilter() {
 
     const courseFilter =
-        document.getElementById("courseFilter");
+        document.getElementById(
+            "courseFilter"
+        );
+
+
+    if (!courseFilter) return;
+
+
+    const currentValue =
+        courseFilter.value;
 
 
     const courses = [
+
         ...new Set(
-            students.map(student => student.course)
+
+            students
+
+                .map(
+                    student =>
+                        student.course
+                )
+
+                .filter(Boolean)
+
         )
+
     ];
+
+
+    courses.sort();
 
 
     courseFilter.innerHTML = `
@@ -468,95 +888,220 @@ function updateCourseFilter() {
             All Courses
         </option>
 
-        ${courses.map(course => `
+        ${courses
+            .map(
+                course => `
 
-            <option value="${course}">
-                ${course}
-            </option>
+                    <option
+                        value="${escapeAttribute(course)}">
 
-        `).join("")}
+                        ${escapeHTML(course)}
+
+                    </option>
+
+                `
+            )
+            .join("")}
 
     `;
+
+
+    if (
+        courses.includes(
+            currentValue
+        )
+    ) {
+
+        courseFilter.value =
+            currentValue;
+
+    }
+
 }
 
+
+// ======================================================
+// COURSE FILTER
+// ======================================================
 
 function filterStudents() {
 
     searchStudents();
+
 }
 
 
-// ================================
+// ======================================================
 // SORT STUDENTS
-// ================================
+// ======================================================
 
 function sortStudents() {
 
-    const sortValue =
-        document
-            .getElementById("sortFilter")
-            .value;
+    const sortFilter =
+        document.getElementById(
+            "sortFilter"
+        );
+
+
+    if (!sortFilter) return;
+
+
+    const value =
+        sortFilter.value;
 
 
     let sorted =
         [...students];
 
 
-    if (sortValue === "nameAsc") {
+    if (value === "nameAsc") {
 
-        sorted.sort((a, b) =>
-            a.name.localeCompare(b.name)
+        sorted.sort(
+            (a, b) =>
+                a.name.localeCompare(
+                    b.name
+                )
         );
 
     }
 
 
-    if (sortValue === "nameDesc") {
+    else if (value === "nameDesc") {
 
-        sorted.sort((a, b) =>
-            b.name.localeCompare(a.name)
+        sorted.sort(
+            (a, b) =>
+                b.name.localeCompare(
+                    a.name
+                )
         );
 
     }
 
 
-    if (sortValue === "courseAsc") {
+    else if (value === "courseAsc") {
 
-        sorted.sort((a, b) =>
-            a.course.localeCompare(b.course)
+        sorted.sort(
+            (a, b) =>
+                a.course.localeCompare(
+                    b.course
+                )
         );
 
     }
 
 
-    if (sortValue === "courseDesc") {
+    else if (value === "courseDesc") {
 
-        sorted.sort((a, b) =>
-            b.course.localeCompare(a.course)
+        sorted.sort(
+            (a, b) =>
+                b.course.localeCompare(
+                    a.course
+                )
         );
 
     }
 
 
     displayStudents(sorted);
+
 }
 
 
-// ================================
-// CLOSE MODAL
-// ================================
+// ======================================================
+// ESCAPE HTML
+// ======================================================
 
-window.onclick = function (event) {
+function escapeHTML(value) {
 
-    if (event.target === modal) {
-        closeForm();
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+function escapeAttribute(value) {
+
+    return String(value)
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+// ======================================================
+// CLOSE MODAL BY CLICKING OUTSIDE
+// ======================================================
+
+window.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target === modal
+        ) {
+
+            closeForm();
+
+        }
+
     }
+);
 
-};
+
+// ======================================================
+// ESC KEY
+// ======================================================
+
+window.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeForm();
+
+        }
+
+    }
+);
 
 
-// ================================
+// ======================================================
 // START APPLICATION
-// ================================
+// ======================================================
 
 loadStudents();
