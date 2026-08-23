@@ -54,22 +54,16 @@ function updateCourseFilter() {
             option.textContent = course;
 
             courseFilter.appendChild(option);
-
         });
 
     if (
         currentValue &&
         courses.includes(currentValue)
     ) {
-
         courseFilter.value = currentValue;
-
     } else {
-
         courseFilter.value = "all";
-
     }
-
 }
 
 
@@ -85,11 +79,9 @@ async function loadStudents() {
             await fetch(API_URL);
 
         if (!response.ok) {
-
             throw new Error(
                 `Server error: ${response.status}`
             );
-
         }
 
         students =
@@ -101,7 +93,6 @@ async function loadStudents() {
         );
 
         updateCourseFilter();
-
         displayStudents();
 
     } catch (error) {
@@ -133,11 +124,8 @@ async function loadStudents() {
                     </td>
                 </tr>
             `;
-
         }
-
     }
-
 }
 
 
@@ -150,7 +138,6 @@ function showForm() {
     if (!modal) return;
 
     modal.style.display = "flex";
-
 }
 
 
@@ -163,7 +150,6 @@ function closeForm() {
     if (!modal) return;
 
     modal.style.display = "none";
-
 }
 
 
@@ -203,7 +189,6 @@ if (form) {
                     .value
                     .trim();
 
-
             if (
                 !name ||
                 !email ||
@@ -216,19 +201,14 @@ if (form) {
                 );
 
                 return;
-
             }
 
-
             const student = {
-
                 name,
                 email,
                 course,
                 phone
-
             };
-
 
             try {
 
@@ -248,10 +228,8 @@ if (form) {
                         }
                     );
 
-
                 const result =
                     await response.json();
-
 
                 if (!response.ok) {
 
@@ -261,9 +239,7 @@ if (form) {
                     );
 
                     return;
-
                 }
-
 
                 form.reset();
 
@@ -275,7 +251,6 @@ if (form) {
 
                 await loadStudents();
 
-
             } catch (error) {
 
                 console.error(
@@ -286,12 +261,9 @@ if (form) {
                 alert(
                     "Backend connection failed."
                 );
-
             }
-
         }
     );
-
 }
 
 
@@ -310,7 +282,7 @@ function displayStudents(data = students) {
 
 
     // ==================================================
-    // DASHBOARD STATISTICS
+    // DASHBOARD
     // ==================================================
 
     const studentCount =
@@ -338,7 +310,6 @@ function displayStudents(data = students) {
 
         studentCount.textContent =
             students.length;
-
     }
 
 
@@ -346,7 +317,6 @@ function displayStudents(data = students) {
 
         activeStudents.textContent =
             students.length;
-
     }
 
 
@@ -363,7 +333,6 @@ function displayStudents(data = students) {
 
         courseCount.textContent =
             courses.length;
-
     }
 
 
@@ -373,7 +342,6 @@ function displayStudents(data = students) {
             students.length > 0
                 ? students[0].name
                 : "-";
-
     }
 
 
@@ -409,7 +377,6 @@ function displayStudents(data = students) {
         `;
 
         return;
-
     }
 
 
@@ -417,110 +384,110 @@ function displayStudents(data = students) {
     // CREATE TABLE ROWS
     // ==================================================
 
-    table.innerHTML = data
-        .map(
-            (student, index) => {
+    table.innerHTML =
+        data
+            .map(
+                (student, index) => {
 
-                const initials =
-                    String(student.name || "")
-                        .split(" ")
-                        .filter(Boolean)
-                        .slice(0, 2)
-                        .map(
-                            word => word[0]
+                    const initials =
+                        String(
+                            student.name || ""
                         )
-                        .join("")
-                        .toUpperCase();
+                            .split(" ")
+                            .filter(Boolean)
+                            .slice(0, 2)
+                            .map(
+                                word =>
+                                    word[0]
+                            )
+                            .join("")
+                            .toUpperCase();
 
 
-                return `
-                    <tr>
+                    return `
+                        <tr>
 
-                        <td>
-                            ${index + 1}
-                        </td>
+                            <td>
+                                ${index + 1}
+                            </td>
 
 
-                        <td>
+                            <td>
 
-                            <div class="student-name">
+                                <div class="student-name">
 
-                                <div class="avatar">
-                                    ${initials}
+                                    <div class="avatar">
+                                        ${initials}
+                                    </div>
+
+                                    <strong>
+                                        ${escapeHTML(
+                                            student.name
+                                        )}
+                                    </strong>
+
                                 </div>
 
-                                <strong>
-                                    ${escapeHTML(
-                                        student.name
-                                    )}
-                                </strong>
-
-                            </div>
-
-                        </td>
+                            </td>
 
 
-                        <td>
-                            ${escapeHTML(
-                                student.email
-                            )}
-                        </td>
-
-
-                        <td>
-
-                            <span class="course-badge">
-
+                            <td>
                                 ${escapeHTML(
-                                    student.course
+                                    student.email
                                 )}
-
-                            </span>
-
-                        </td>
+                            </td>
 
 
-                        <td>
-                            ${escapeHTML(
-                                student.phone
-                            )}
-                        </td>
+                            <td>
+
+                                <span class="course-badge">
+                                    ${escapeHTML(
+                                        student.course
+                                    )}
+                                </span>
+
+                            </td>
 
 
-                        <td>
-
-                            <div class="action-wrap">
-
-                                <button
-                                    type="button"
-                                    class="edit-btn"
-                                    onclick="editStudent('${student._id}')">
-
-                                    ✎ Edit
-
-                                </button>
+                            <td>
+                                ${escapeHTML(
+                                    student.phone
+                                )}
+                            </td>
 
 
-                                <button
-                                    type="button"
-                                    class="delete-btn"
-                                    onclick="deleteStudent('${student._id}')">
+                            <td>
 
-                                    🗑 Delete
+                                <div class="action-wrap">
 
-                                </button>
+                                    <button
+                                        type="button"
+                                        class="edit-btn"
+                                        onclick="editStudent('${student._id}')">
 
-                            </div>
+                                        ✎ Edit
 
-                        </td>
+                                    </button>
 
-                    </tr>
-                `;
 
-            }
-        )
-        .join("");
+                                    <button
+                                        type="button"
+                                        class="delete-btn"
+                                        onclick="deleteStudent('${student._id}')">
 
+                                        🗑 Delete
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    `;
+                }
+            )
+            .join("");
 }
 
 
@@ -535,7 +502,6 @@ function editStudent(id) {
             item => item._id === id
         );
 
-
     if (!student) {
 
         alert(
@@ -543,50 +509,32 @@ function editStudent(id) {
         );
 
         return;
-
     }
 
 
-    const idInput =
-        document.getElementById(
-            "editStudentId"
-        );
-
-    const nameInput =
-        document.getElementById(
-            "editName"
-        );
-
-    const emailInput =
-        document.getElementById(
-            "editEmail"
-        );
-
-    const courseInput =
-        document.getElementById(
-            "editCourse"
-        );
-
-    const phoneInput =
-        document.getElementById(
-            "editPhone"
-        );
+    document.getElementById(
+        "editStudentId"
+    ).value = student._id;
 
 
-    if (idInput)
-        idInput.value = student._id;
+    document.getElementById(
+        "editName"
+    ).value = student.name || "";
 
-    if (nameInput)
-        nameInput.value = student.name || "";
 
-    if (emailInput)
-        emailInput.value = student.email || "";
+    document.getElementById(
+        "editEmail"
+    ).value = student.email || "";
 
-    if (courseInput)
-        courseInput.value = student.course || "";
 
-    if (phoneInput)
-        phoneInput.value = student.phone || "";
+    document.getElementById(
+        "editCourse"
+    ).value = student.course || "";
+
+
+    document.getElementById(
+        "editPhone"
+    ).value = student.phone || "";
 
 
     const editModal =
@@ -598,9 +546,7 @@ function editStudent(id) {
     if (editModal) {
 
         editModal.classList.add("active");
-
     }
-
 }
 
 
@@ -615,15 +561,14 @@ function closeEditForm() {
             "editStudentModal"
         );
 
-
     if (editModal) {
 
         editModal.classList.remove(
             "active"
         );
 
+        editModal.style.display = "none";
     }
-
 }
 
 
@@ -644,7 +589,6 @@ if (editForm) {
         async function (event) {
 
             event.preventDefault();
-
 
             const id =
                 document.getElementById(
@@ -673,7 +617,6 @@ if (editForm) {
                     document.getElementById(
                         "editPhone"
                     ).value.trim()
-
             };
 
 
@@ -689,7 +632,6 @@ if (editForm) {
                 );
 
                 return;
-
             }
 
 
@@ -726,7 +668,6 @@ if (editForm) {
                     );
 
                     return;
-
                 }
 
 
@@ -749,12 +690,9 @@ if (editForm) {
                 alert(
                     "Backend connection failed."
                 );
-
             }
-
         }
     );
-
 }
 
 
@@ -764,71 +702,198 @@ if (editForm) {
 
 function deleteStudent(id) {
 
-    const student = students.find(
-        item => item._id === id
+    console.log(
+        "Delete clicked:",
+        id
     );
+
+
+    const student =
+        students.find(
+            item => item._id === id
+        );
+
 
     if (!student) {
 
-        alert("Student NOT FOUND");
+        alert(
+            "Student not found."
+        );
 
         return;
-
     }
+
 
     studentToDelete = student;
 
+
     const deleteModal =
-        document.getElementById("deleteStudentModal");
+        document.getElementById(
+            "deleteStudentModal"
+        );
+
 
     const message =
-        document.getElementById("deleteStudentMessage");
+        document.getElementById(
+            "deleteStudentMessage"
+        );
+
 
     if (message) {
 
         message.textContent =
             `Are you sure you want to delete ${student.name}?`;
-
     }
+
 
     if (!deleteModal) {
 
-        alert("DELETE MODAL NOT FOUND");
+        alert(
+            "Delete modal not found in HTML."
+        );
 
         return;
-
     }
 
-    // IMPORTANT
+
+    // SHOW DELETE MODAL
     deleteModal.style.display = "flex";
 
-    deleteModal.classList.add("active");
+    deleteModal.classList.add(
+        "active"
+    );
 
+
+    console.log(
+        "Delete modal opened"
+    );
 }
+
+
 // ======================================================
 // CLOSE DELETE MODAL
 // ======================================================
 
 function closeDeleteModal() {
 
-    console.log("CLOSE DELETE MODAL");
+    console.log(
+        "Closing delete modal"
+    );
+
 
     const deleteModal =
-        document.getElementById("deleteStudentModal");
+        document.getElementById(
+            "deleteStudentModal"
+        );
+
 
     if (deleteModal) {
 
-    deleteModal.classList.add("active");
-    deleteModal.style.display = "flex";
+        deleteModal.classList.remove(
+            "active"
+        );
 
-}
-
-        // Force hide
-        deleteModal.style.display = "none";
+        deleteModal.style.display =
+            "none";
     }
+
 
     studentToDelete = null;
 }
+
+
+// ======================================================
+// CONFIRM DELETE
+// ======================================================
+
+async function confirmDeleteStudent() {
+
+    console.log(
+        "Confirm delete clicked"
+    );
+
+
+    if (!studentToDelete) {
+
+        console.log(
+            "No student selected"
+        );
+
+        return;
+    }
+
+
+    const id =
+        studentToDelete._id;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        let result = {};
+
+        try {
+
+            result =
+                await response.json();
+
+        } catch (error) {
+
+            result = {};
+        }
+
+
+        if (!response.ok) {
+
+            alert(
+                result.message ||
+                "Unable to delete student."
+            );
+
+            return;
+        }
+
+
+        // CLEAR SELECTED STUDENT
+        studentToDelete = null;
+
+
+        // CLOSE MODAL
+        closeDeleteModal();
+
+
+        // RELOAD DATA
+        await loadStudents();
+
+
+        // SUCCESS MESSAGE
+        showToast(
+            "Student deleted successfully! 🗑️"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete error:",
+            error
+        );
+
+
+        alert(
+            "Backend connection failed."
+        );
+    }
+}
+
 
 // ======================================================
 // SEARCH STUDENTS
@@ -860,15 +925,18 @@ function searchStudents() {
                         student.name || ""
                     ).toLowerCase();
 
+
                 const email =
                     String(
                         student.email || ""
                     ).toLowerCase();
 
+
                 const course =
                     String(
                         student.course || ""
                     ).toLowerCase();
+
 
                 const phone =
                     String(
@@ -882,18 +950,18 @@ function searchStudents() {
                     course.includes(search) ||
                     phone.includes(search)
                 );
-
             }
         );
 
 
-    displayStudents(filtered);
-
+    displayStudents(
+        filtered
+    );
 }
 
 
 // ======================================================
-// FILTER BY COURSE
+// FILTER STUDENTS
 // ======================================================
 
 function filterStudents() {
@@ -918,7 +986,6 @@ function filterStudents() {
         );
 
         return;
-
     }
 
 
@@ -932,7 +999,6 @@ function filterStudents() {
     displayStudents(
         filtered
     );
-
 }
 
 
@@ -968,7 +1034,6 @@ function sortStudents() {
                         String(b.name)
                     )
         );
-
     }
 
 
@@ -981,7 +1046,6 @@ function sortStudents() {
                         String(a.name)
                     )
         );
-
     }
 
 
@@ -994,7 +1058,6 @@ function sortStudents() {
                         String(b.course)
                     )
         );
-
     }
 
 
@@ -1007,14 +1070,12 @@ function sortStudents() {
                         String(a.course)
                     )
         );
-
     }
 
 
     displayStudents(
         sorted
     );
-
 }
 
 
@@ -1024,7 +1085,9 @@ function sortStudents() {
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
 
         .replace(
             /&/g,
@@ -1050,12 +1113,11 @@ function escapeHTML(value) {
             /'/g,
             "&#039;"
         );
-
 }
 
 
 // ======================================================
-// CLOSE ADD MODAL OUTSIDE CLICK
+// OUTSIDE CLICK
 // ======================================================
 
 window.addEventListener(
@@ -1067,9 +1129,37 @@ window.addEventListener(
         ) {
 
             closeForm();
-
         }
 
+
+        const editModal =
+            document.getElementById(
+                "editStudentModal"
+            );
+
+
+        if (
+            editModal &&
+            event.target === editModal
+        ) {
+
+            closeEditForm();
+        }
+
+
+        const deleteModal =
+            document.getElementById(
+                "deleteStudentModal"
+            );
+
+
+        if (
+            deleteModal &&
+            event.target === deleteModal
+        ) {
+
+            closeDeleteModal();
+        }
     }
 );
 
@@ -1091,9 +1181,7 @@ window.addEventListener(
             closeEditForm();
 
             closeDeleteModal();
-
         }
-
     }
 );
 
@@ -1109,6 +1197,7 @@ function showToast(message) {
             "toast"
         );
 
+
     const toastMessage =
         document.getElementById(
             "toastMessage"
@@ -1121,7 +1210,6 @@ function showToast(message) {
     ) {
 
         return;
-
     }
 
 
@@ -1144,7 +1232,6 @@ function showToast(message) {
         },
         3000
     );
-
 }
 
 
