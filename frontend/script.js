@@ -16,6 +16,71 @@ const form = document.getElementById("studentForm");
 
 let students = [];
 
+// ======================================================
+// UPDATE COURSE FILTER
+// ======================================================
+
+function updateCourseFilter() {
+
+    const courseFilter =
+        document.getElementById("courseFilter");
+
+    if (!courseFilter) return;
+
+
+    const currentValue =
+        courseFilter.value;
+
+
+    const courses = [
+        ...new Set(
+            students
+                .map(student => student.course)
+                .filter(Boolean)
+        )
+    ];
+
+
+    courseFilter.innerHTML = `
+        <option value="all">
+            All Courses
+        </option>
+    `;
+
+
+    courses
+        .sort()
+        .forEach(course => {
+
+            const option =
+                document.createElement("option");
+
+            option.value = course;
+
+            option.textContent = course;
+
+            courseFilter.appendChild(option);
+
+        });
+
+
+    // Keep previously selected course
+    if (
+        currentValue &&
+        courses.includes(currentValue)
+    ) {
+
+        courseFilter.value =
+            currentValue;
+
+    } else {
+
+        courseFilter.value = "all";
+
+    }
+
+}
+
 
 // ======================================================
 // LOAD STUDENTS FROM BACKEND
