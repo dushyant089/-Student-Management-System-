@@ -848,6 +848,54 @@ tbody tr:hover {
     background: #fafbff;
 }
 
+/* =========================================
+   ACTION BUTTONS
+========================================= */
+
+.action-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+    border: none;
+    padding: 7px 11px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* EDIT BUTTON */
+
+.edit-btn {
+    background: #eef2ff;
+    color: #4f46e5;
+    border: 1px solid #e0e7ff;
+}
+
+.edit-btn:hover {
+    background: #e0e7ff;
+    color: #4338ca;
+    transform: translateY(-1px);
+}
+
+/* DELETE BUTTON */
+
+.delete-btn {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+}
+
+.delete-btn:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+    transform: translateY(-1px);
+}
 
 /* EMPTY */
 
