@@ -1,82 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>IIT Meerut - Student Management</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
 </head>
 
 <body>
 
 <div class="app">
 
-    <!-- SIDEBAR -->
+    <!-- ==================================================
+         SIDEBAR
+    ================================================== -->
+
     <aside class="sidebar">
 
         <div class="logo">
-            <div class="logo-icon">🎓</div>
+
+            <div class="logo-icon">
+                🎓
+            </div>
 
             <div>
-                <h2>IIT<span>Meerut</span></h2>
-                <small>Student Management</small>
+
+                <h2>
+                    IIT<span>Meerut</span>
+                </h2>
+
+                <small>
+                    Student Management
+                </small>
+
             </div>
+
         </div>
+
 
         <nav class="menu">
 
-            <a href="#" class="menu-item active">
+            <a
+                href="#"
+                class="menu-item active">
+
                 <span>▦</span>
                 Dashboard
+
             </a>
 
-            <a href="#students" class="menu-item">
+
+            <a
+                href="#students"
+                class="menu-item">
+
                 <span>👥</span>
                 All Students
+
             </a>
 
-            <a href="#" class="menu-item" onclick="showForm()">
+
+            <a
+                href="#"
+                class="menu-item"
+                onclick="showForm()">
+
                 <span>⊕</span>
                 Add Student
+
             </a>
 
-            <a href="#" class="menu-item">
+
+            <a
+                href="#"
+                class="menu-item">
+
                 <span>▥</span>
                 Reports
+
             </a>
 
         </nav>
+
 
         <div class="menu-title">
             OTHER
         </div>
 
+
         <nav class="menu">
 
-            <a href="#" class="menu-item">
+            <a
+                href="#"
+                class="menu-item">
+
                 <span>⚙</span>
                 Settings
+
             </a>
 
-            <a href="#" class="menu-item">
+
+            <a
+                href="#"
+                class="menu-item">
+
                 <span>⇥</span>
                 Logout
+
             </a>
 
         </nav>
 
+
         <div class="sidebar-card">
 
-            <div class="graduation">🎓</div>
+            <div class="graduation">
+                🎓
+            </div>
 
-            <h3>Empowering Education</h3>
+            <h3>
+                Empowering Education
+            </h3>
 
             <p>
                 Manage, Track & Inspire
@@ -92,10 +159,15 @@
     </aside>
 
 
-    <!-- MAIN -->
+    <!-- ==================================================
+         MAIN
+    ================================================== -->
+
     <main class="main">
 
+
         <!-- TOPBAR -->
+
         <header class="topbar">
 
             <button class="mobile-menu">
@@ -104,6 +176,7 @@
 
             <div></div>
 
+
             <div class="admin">
 
                 <div class="admin-avatar">
@@ -111,11 +184,20 @@
                 </div>
 
                 <div>
-                    <strong>Admin</strong>
-                    <small>Administrator</small>
+
+                    <strong>
+                        Admin
+                    </strong>
+
+                    <small>
+                        Administrator
+                    </small>
+
                 </div>
 
-                <span>⌄</span>
+                <span>
+                    ⌄
+                </span>
 
             </div>
 
@@ -123,10 +205,14 @@
 
 
         <!-- CONTENT -->
+
         <section class="content">
 
 
-            <!-- HERO -->
+            <!-- ==================================================
+                 HERO
+            ================================================== -->
+
             <div class="hero">
 
                 <div class="hero-text">
@@ -136,10 +222,12 @@
                     </h1>
 
                     <p>
-                        Here's what's happening with your students today.
+                        Here's what's happening with
+                        your students today.
                     </p>
 
                 </div>
+
 
                 <div class="hero-image">
                     🎓
@@ -148,8 +236,14 @@
             </div>
 
 
-            <!-- STAT CARDS -->
+            <!-- ==================================================
+                 STAT CARDS
+            ================================================== -->
+
             <div class="stats">
+
+
+                <!-- TOTAL STUDENTS -->
 
                 <div class="stat-card">
 
@@ -158,7 +252,10 @@
                     </div>
 
                     <div>
-                        <span>Total Students</span>
+
+                        <span>
+                            Total Students
+                        </span>
 
                         <h2 id="studentCount">
                             0
@@ -167,10 +264,13 @@
                         <small class="green-text">
                             ↑ Students registered
                         </small>
+
                     </div>
 
                 </div>
 
+
+                <!-- ACTIVE STUDENTS -->
 
                 <div class="stat-card">
 
@@ -179,7 +279,10 @@
                     </div>
 
                     <div>
-                        <span>Active Students</span>
+
+                        <span>
+                            Active Students
+                        </span>
 
                         <h2 id="activeStudents">
                             0
@@ -188,10 +291,13 @@
                         <small class="green-text">
                             Active records
                         </small>
+
                     </div>
 
                 </div>
 
+
+                <!-- LATEST STUDENT -->
 
                 <div class="stat-card">
 
@@ -200,7 +306,10 @@
                     </div>
 
                     <div>
-                        <span>Latest Student</span>
+
+                        <span>
+                            Latest Student
+                        </span>
 
                         <h2 id="latestStudent">
                             -
@@ -209,10 +318,13 @@
                         <small>
                             Recently added
                         </small>
+
                     </div>
 
                 </div>
 
+
+                <!-- COURSES -->
 
                 <div class="stat-card">
 
@@ -221,7 +333,10 @@
                     </div>
 
                     <div>
-                        <span>Total Courses</span>
+
+                        <span>
+                            Total Courses
+                        </span>
 
                         <h2 id="courseCount">
                             0
@@ -230,6 +345,7 @@
                         <small class="orange-text">
                             Active courses
                         </small>
+
                     </div>
 
                 </div>
@@ -237,8 +353,16 @@
             </div>
 
 
-            <!-- STUDENT DIRECTORY -->
-            <section class="student-section" id="students">
+            <!-- ==================================================
+                 STUDENT DIRECTORY
+            ================================================== -->
+
+            <section
+                class="student-section"
+                id="students">
+
+
+                <!-- SECTION HEADER -->
 
                 <div class="section-header">
 
@@ -249,10 +373,12 @@
                         </h2>
 
                         <p>
-                            View and manage all registered students.
+                            View and manage all
+                            registered students.
                         </p>
 
                     </div>
+
 
                     <button
                         class="add-student"
@@ -265,12 +391,20 @@
                 </div>
 
 
-                <!-- TOOLBAR -->
+                <!-- ==================================================
+                     TOOLBAR
+                ================================================== -->
+
                 <div class="toolbar">
+
+
+                    <!-- SEARCH -->
 
                     <div class="search">
 
-                        <span>⌕</span>
+                        <span>
+                            ⌕
+                        </span>
 
                         <input
                             type="text"
@@ -280,6 +414,8 @@
 
                     </div>
 
+
+                    <!-- COURSE FILTER -->
 
                     <select
                         id="courseFilter"
@@ -291,6 +427,8 @@
 
                     </select>
 
+
+                    <!-- SORT -->
 
                     <select
                         id="sortFilter"
@@ -321,7 +459,10 @@
                 </div>
 
 
-                <!-- TABLE -->
+                <!-- ==================================================
+                     TABLE
+                ================================================== -->
+
                 <div class="table-wrapper">
 
                     <table>
@@ -330,17 +471,29 @@
 
                             <tr>
 
-                                <th>#</th>
+                                <th>
+                                    #
+                                </th>
 
-                                <th>STUDENT</th>
+                                <th>
+                                    STUDENT
+                                </th>
 
-                                <th>EMAIL</th>
+                                <th>
+                                    EMAIL
+                                </th>
 
-                                <th>COURSE</th>
+                                <th>
+                                    COURSE
+                                </th>
 
-                                <th>PHONE</th>
+                                <th>
+                                    PHONE
+                                </th>
 
-                                <th>ACTIONS</th>
+                                <th>
+                                    ACTIONS
+                                </th>
 
                             </tr>
 
@@ -364,7 +517,8 @@
                                     </strong>
 
                                     <span>
-                                        Add your first student to get started.
+                                        Add your first student
+                                        to get started.
                                     </span>
 
                                 </td>
@@ -386,13 +540,16 @@
 </div>
 
 
-<!-- ADD STUDENT MODAL -->
+<!-- ==========================================================
+     ADD STUDENT MODAL
+========================================================== -->
 
 <div
     class="modal"
     id="studentModal">
 
     <div class="modal-box">
+
 
         <button
             class="close"
@@ -426,6 +583,9 @@
 
         <form id="studentForm">
 
+
+            <!-- NAME -->
+
             <div class="form-group">
 
                 <label>
@@ -440,6 +600,8 @@
 
             </div>
 
+
+            <!-- EMAIL -->
 
             <div class="form-group">
 
@@ -456,6 +618,8 @@
             </div>
 
 
+            <!-- COURSE -->
+
             <div class="form-group">
 
                 <label>
@@ -470,6 +634,8 @@
 
             </div>
 
+
+            <!-- PHONE -->
 
             <div class="form-group">
 
@@ -486,6 +652,8 @@
             </div>
 
 
+            <!-- BUTTONS -->
+
             <div class="modal-buttons">
 
                 <button
@@ -496,6 +664,7 @@
                     Cancel
 
                 </button>
+
 
                 <button
                     type="submit"
@@ -512,18 +681,27 @@
     </div>
 
 </div>
-```html
-<!-- EDIT STUDENT MODAL -->
 
-<div class="modal" id="editStudentModal">
+
+<!-- ==========================================================
+     EDIT STUDENT MODAL
+========================================================== -->
+
+<div
+    class="modal"
+    id="editStudentModal">
 
     <div class="modal-box">
+
 
         <button
             class="close"
             onclick="closeEditForm()">
+
             ×
+
         </button>
+
 
         <div class="modal-title">
 
@@ -532,21 +710,35 @@
             </div>
 
             <div>
-                <h2>Edit Student</h2>
-                <p>Update the student's information below.</p>
+
+                <h2>
+                    Edit Student
+                </h2>
+
+                <p>
+                    Update the student's information below.
+                </p>
+
             </div>
 
         </div>
 
+
         <form id="editStudentForm">
+
 
             <input
                 type="hidden"
                 id="editStudentId">
 
+
+            <!-- NAME -->
+
             <div class="form-group">
 
-                <label>Student Name</label>
+                <label>
+                    Student Name
+                </label>
 
                 <input
                     type="text"
@@ -556,9 +748,14 @@
 
             </div>
 
+
+            <!-- EMAIL -->
+
             <div class="form-group">
 
-                <label>Email Address</label>
+                <label>
+                    Email Address
+                </label>
 
                 <input
                     type="email"
@@ -568,9 +765,14 @@
 
             </div>
 
+
+            <!-- COURSE -->
+
             <div class="form-group">
 
-                <label>Course</label>
+                <label>
+                    Course
+                </label>
 
                 <input
                     type="text"
@@ -580,9 +782,14 @@
 
             </div>
 
+
+            <!-- PHONE -->
+
             <div class="form-group">
 
-                <label>Phone Number</label>
+                <label>
+                    Phone Number
+                </label>
 
                 <input
                     type="tel"
@@ -592,19 +799,27 @@
 
             </div>
 
+
+            <!-- BUTTONS -->
+
             <div class="modal-buttons">
 
                 <button
                     type="button"
                     class="cancel"
                     onclick="closeEditForm()">
+
                     Cancel
+
                 </button>
+
 
                 <button
                     type="submit"
                     class="save">
+
                     Update Student →
+
                 </button>
 
             </div>
@@ -614,43 +829,66 @@
     </div>
 
 </div>
-```
-<!-- DELETE CONFIRMATION MODAL -->
 
-<div class="modal" id="deleteStudentModal">
+
+<!-- ==========================================================
+     DELETE STUDENT MODAL
+========================================================== -->
+
+<div
+    class="modal"
+    id="deleteStudentModal">
 
     <div class="modal-box delete-modal-box">
+
 
         <button
             class="close"
             onclick="closeDeleteModal()">
+
             ×
+
         </button>
+
 
         <div class="delete-icon">
             🗑️
         </div>
 
-        <h2>Delete Student?</h2>
+
+        <h2>
+            Delete Student?
+        </h2>
+
 
         <p id="deleteStudentMessage">
-            Are you sure you want to delete this student?
+
+            Are you sure you want to delete
+            this student?
+
         </p>
 
+
         <div class="modal-buttons">
+
 
             <button
                 type="button"
                 class="cancel"
                 onclick="closeDeleteModal()">
+
                 Cancel
+
             </button>
+
 
             <button
                 type="button"
                 class="delete-confirm"
                 onclick="confirmDeleteStudent()">
+
                 Delete Student
+
             </button>
 
         </div>
@@ -660,13 +898,30 @@
 </div>
 
 
-<script src="script.js"></script>
+<!-- ==========================================================
+     TOAST NOTIFICATION
+========================================================== -->
 
-<!-- Toast Notification -->
-<div id="toast" class="toast">
-    <span id="toastIcon">✓</span>
-    <span id="toastMessage">Success!</span>
+<div
+    id="toast"
+    class="toast">
+
+    <span id="toastIcon">
+        ✓
+    </span>
+
+    <span id="toastMessage">
+        Success!
+    </span>
+
 </div>
 
+
+<!-- JAVASCRIPT -->
+
+<script src="script.js"></script>
+
+
 </body>
+
 </html>

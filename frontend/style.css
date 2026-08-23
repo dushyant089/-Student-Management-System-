@@ -1571,3 +1571,10 @@ tbody tr:hover {
 
     font-weight: 800;
 }
+#deleteStudentModal {
+    display: none;
+}
+
+#deleteStudentModal.active {
+    display: flex;
+}

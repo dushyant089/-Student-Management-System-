@@ -1,20 +1,22 @@
 // ======================================================
 // STUDENT MANAGEMENT SYSTEM
-// Frontend JavaScript
+// FRONTEND JAVASCRIPT
 // ======================================================
-
-// IMPORTANT:
-// Ye tumhara existing Render backend hai.
-// Isko change mat karna.
 
 const API_URL =
     "https://student-management-system-r5qx.onrender.com/api/students";
 
 
+// ======================================================
+// GLOBAL VARIABLES
+// ======================================================
+
 const modal = document.getElementById("studentModal");
 const form = document.getElementById("studentForm");
 
 let students = [];
+let studentToDelete = null;
+
 
 // ======================================================
 // UPDATE COURSE FILTER
@@ -27,10 +29,7 @@ function updateCourseFilter() {
 
     if (!courseFilter) return;
 
-
-    const currentValue =
-        courseFilter.value;
-
+    const currentValue = courseFilter.value;
 
     const courses = [
         ...new Set(
@@ -40,13 +39,9 @@ function updateCourseFilter() {
         )
     ];
 
-
     courseFilter.innerHTML = `
-        <option value="all">
-            All Courses
-        </option>
+        <option value="all">All Courses</option>
     `;
-
 
     courses
         .sort()
@@ -56,22 +51,18 @@ function updateCourseFilter() {
                 document.createElement("option");
 
             option.value = course;
-
             option.textContent = course;
 
             courseFilter.appendChild(option);
 
         });
 
-
-    // Keep previously selected course
     if (
         currentValue &&
         courses.includes(currentValue)
     ) {
 
-        courseFilter.value =
-            currentValue;
+        courseFilter.value = currentValue;
 
     } else {
 
@@ -83,22 +74,26 @@ function updateCourseFilter() {
 
 
 // ======================================================
-// LOAD STUDENTS FROM BACKEND
+// LOAD STUDENTS
 // ======================================================
 
 async function loadStudents() {
 
     try {
 
-        const response = await fetch(API_URL);
+        const response =
+            await fetch(API_URL);
 
         if (!response.ok) {
+
             throw new Error(
                 `Server error: ${response.status}`
             );
+
         }
 
-        students = await response.json();
+        students =
+            await response.json();
 
         console.log(
             "Students loaded:",
@@ -160,7 +155,7 @@ function showForm() {
 
 
 // ======================================================
-// CLOSE MODAL
+// CLOSE ADD STUDENT MODAL
 // ======================================================
 
 function closeForm() {
@@ -184,13 +179,11 @@ if (form) {
 
             event.preventDefault();
 
-
             const name =
                 document
                     .getElementById("name")
                     .value
                     .trim();
-
 
             const email =
                 document
@@ -198,13 +191,11 @@ if (form) {
                     .value
                     .trim();
 
-
             const course =
                 document
                     .getElementById("course")
                     .value
                     .trim();
-
 
             const phone =
                 document
@@ -231,13 +222,10 @@ if (form) {
 
             const student = {
 
-                name: name,
-
-                email: email,
-
-                course: course,
-
-                phone: phone
+                name,
+                email,
+                course,
+                phone
 
             };
 
@@ -277,14 +265,13 @@ if (form) {
                 }
 
 
-                showToast(
-    "Student added successfully!"
-);
-
-
                 form.reset();
 
                 closeForm();
+
+                showToast(
+                    "Student added successfully! 🎉"
+                );
 
                 await loadStudents();
 
@@ -319,13 +306,12 @@ function displayStudents(data = students) {
             "studentTable"
         );
 
-
     if (!table) return;
 
 
-    // --------------------------------------------------
+    // ==================================================
     // DASHBOARD STATISTICS
-    // --------------------------------------------------
+    // ==================================================
 
     const studentCount =
         document.getElementById(
@@ -352,7 +338,6 @@ function displayStudents(data = students) {
 
         studentCount.textContent =
             students.length;
-            console.log("Total Students:", students.length);
 
     }
 
@@ -366,20 +351,11 @@ function displayStudents(data = students) {
 
 
     const courses = [
-
         ...new Set(
-
             students
-
-                .map(
-                    student =>
-                        student.course
-                )
-
+                .map(student => student.course)
                 .filter(Boolean)
-
         )
-
     ];
 
 
@@ -401,9 +377,9 @@ function displayStudents(data = students) {
     }
 
 
-    // --------------------------------------------------
+    // ==================================================
     // EMPTY TABLE
-    // --------------------------------------------------
+    // ==================================================
 
     if (
         !data ||
@@ -411,16 +387,13 @@ function displayStudents(data = students) {
     ) {
 
         table.innerHTML = `
-
             <tr>
 
                 <td
                     colspan="6"
                     class="empty">
 
-                    <div>
-                        🎓
-                    </div>
+                    <div>🎓</div>
 
                     <strong>
                         No students found
@@ -433,7 +406,6 @@ function displayStudents(data = students) {
                 </td>
 
             </tr>
-
         `;
 
         return;
@@ -441,32 +413,27 @@ function displayStudents(data = students) {
     }
 
 
-    // --------------------------------------------------
-    // CREATE STUDENT ROWS
-    // --------------------------------------------------
+    // ==================================================
+    // CREATE TABLE ROWS
+    // ==================================================
 
     table.innerHTML = data
         .map(
             (student, index) => {
 
-
-                // Student initials
-
                 const initials =
-                    student.name
+                    String(student.name || "")
                         .split(" ")
                         .filter(Boolean)
                         .slice(0, 2)
                         .map(
-                            word =>
-                                word[0]
+                            word => word[0]
                         )
                         .join("")
                         .toUpperCase();
 
 
                 return `
-
                     <tr>
 
                         <td>
@@ -476,23 +443,16 @@ function displayStudents(data = students) {
 
                         <td>
 
-                            <div
-                                class="student-name">
+                            <div class="student-name">
 
-                                <div
-                                    class="avatar">
-
+                                <div class="avatar">
                                     ${initials}
-
                                 </div>
 
-
                                 <strong>
-
                                     ${escapeHTML(
                                         student.name
                                     )}
-
                                 </strong>
 
                             </div>
@@ -501,18 +461,15 @@ function displayStudents(data = students) {
 
 
                         <td>
-
                             ${escapeHTML(
                                 student.email
                             )}
-
                         </td>
 
 
                         <td>
 
-                            <span
-                                class="course-badge">
+                            <span class="course-badge">
 
                                 ${escapeHTML(
                                     student.course
@@ -524,21 +481,18 @@ function displayStudents(data = students) {
 
 
                         <td>
-
                             ${escapeHTML(
                                 student.phone
                             )}
-
                         </td>
 
 
                         <td>
 
-                            <div
-                                class="action-wrap">
-
+                            <div class="action-wrap">
 
                                 <button
+                                    type="button"
                                     class="edit-btn"
                                     onclick="editStudent('${student._id}')">
 
@@ -548,20 +502,19 @@ function displayStudents(data = students) {
 
 
                                 <button
+                                    type="button"
                                     class="delete-btn"
                                     onclick="deleteStudent('${student._id}')">
 
-                                    Delete
+                                    🗑 Delete
 
                                 </button>
-
 
                             </div>
 
                         </td>
 
                     </tr>
-
                 `;
 
             }
@@ -575,44 +528,100 @@ function displayStudents(data = students) {
 // EDIT STUDENT
 // ======================================================
 
-async function editStudent(id) {
+function editStudent(id) {
 
-    const student = students.find(
-        item => item._id === id
-    );
+    const student =
+        students.find(
+            item => item._id === id
+        );
+
 
     if (!student) {
-        alert("Student not found.");
+
+        alert(
+            "Student not found."
+        );
+
         return;
+
     }
 
-    // Fill edit modal with existing student data
-    document.getElementById("editStudentId").value = student._id;
-    document.getElementById("editName").value = student.name || "";
-    document.getElementById("editEmail").value = student.email || "";
-    document.getElementById("editCourse").value = student.course || "";
-    document.getElementById("editPhone").value = student.phone || "";
 
-    // Show edit modal
-    const modal = document.getElementById("editStudentModal");
+    const idInput =
+        document.getElementById(
+            "editStudentId"
+        );
 
-    if (modal) {
-        modal.classList.add("active");
+    const nameInput =
+        document.getElementById(
+            "editName"
+        );
+
+    const emailInput =
+        document.getElementById(
+            "editEmail"
+        );
+
+    const courseInput =
+        document.getElementById(
+            "editCourse"
+        );
+
+    const phoneInput =
+        document.getElementById(
+            "editPhone"
+        );
+
+
+    if (idInput)
+        idInput.value = student._id;
+
+    if (nameInput)
+        nameInput.value = student.name || "";
+
+    if (emailInput)
+        emailInput.value = student.email || "";
+
+    if (courseInput)
+        courseInput.value = student.course || "";
+
+    if (phoneInput)
+        phoneInput.value = student.phone || "";
+
+
+    const editModal =
+        document.getElementById(
+            "editStudentModal"
+        );
+
+
+    if (editModal) {
+
+        editModal.classList.add("active");
+
     }
+
 }
 
 
 // ======================================================
-// CLOSE EDIT STUDENT MODAL
+// CLOSE EDIT MODAL
 // ======================================================
 
 function closeEditForm() {
 
-    const modal =
-        document.getElementById("editStudentModal");
+    const editModal =
+        document.getElementById(
+            "editStudentModal"
+        );
 
-    if (modal) {
-        modal.classList.remove("active");
+
+    if (editModal) {
+
+        editModal.classList.remove(
+            "active"
+        );
+
     }
 
 }
@@ -622,76 +631,61 @@ function closeEditForm() {
 // UPDATE STUDENT
 // ======================================================
 
-document
-    .getElementById("editStudentForm")
-    ?.addEventListener("submit", async function (event) {
-
-        event.preventDefault();
-
-        const id =
-            document.getElementById("editStudentId").value;
-
-        const updatedStudent = {
-
-            name:
-                document.getElementById("editName").value.trim(),
-
-            email:
-                document.getElementById("editEmail").value.trim(),
-
-            course:
-                document.getElementById("editCourse").value.trim(),
-
-            phone:
-                document.getElementById("editPhone").value.trim()
-
-        };
+const editForm =
+    document.getElementById(
+        "editStudentForm"
+    );
 
 
-        if (
-            !updatedStudent.name ||
-            !updatedStudent.email ||
-            !updatedStudent.course ||
-            !updatedStudent.phone
-        ) {
+if (editForm) {
 
-            alert("All fields are required.");
+    editForm.addEventListener(
+        "submit",
+        async function (event) {
 
-            return;
-
-        }
+            event.preventDefault();
 
 
-        try {
-
-            const response =
-                await fetch(
-                    `${API_URL}/${id}`,
-                    {
-                        method: "PUT",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(
-                                updatedStudent
-                            )
-                    }
-                );
+            const id =
+                document.getElementById(
+                    "editStudentId"
+                ).value;
 
 
-            const result =
-                await response.json();
+            const updatedStudent = {
+
+                name:
+                    document.getElementById(
+                        "editName"
+                    ).value.trim(),
+
+                email:
+                    document.getElementById(
+                        "editEmail"
+                    ).value.trim(),
+
+                course:
+                    document.getElementById(
+                        "editCourse"
+                    ).value.trim(),
+
+                phone:
+                    document.getElementById(
+                        "editPhone"
+                    ).value.trim()
+
+            };
 
 
-            if (!response.ok) {
+            if (
+                !updatedStudent.name ||
+                !updatedStudent.email ||
+                !updatedStudent.course ||
+                !updatedStudent.phone
+            ) {
 
                 alert(
-                    result.message ||
-                    "Unable to update student."
+                    "All fields are required."
                 );
 
                 return;
@@ -699,38 +693,74 @@ document
             }
 
 
-            // Close modal
-            closeEditForm();
+            try {
 
-            // Refresh student list
-            await loadStudents();
+                const response =
+                    await fetch(
+                        `${API_URL}/${id}`,
+                        {
+                            method: "PUT",
 
-            alert(
-                "Student updated successfully! 🎉"
-            );
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    updatedStudent
+                                )
+                        }
+                    );
 
 
-        } catch (error) {
+                const result =
+                    await response.json();
 
-            console.error(
-                "Update error:",
-                error
-            );
 
-            alert(
-                "Backend connection failed."
-            );
+                if (!response.ok) {
+
+                    alert(
+                        result.message ||
+                        "Unable to update student."
+                    );
+
+                    return;
+
+                }
+
+
+                closeEditForm();
+
+                await loadStudents();
+
+                showToast(
+                    "Student updated successfully! 🎉"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Update error:",
+                    error
+                );
+
+                alert(
+                    "Backend connection failed."
+                );
+
+            }
 
         }
+    );
 
-    });
+}
 
-    // ======================================================
-// DELETE STUDENT MODAL
+
 // ======================================================
-
-let studentToDelete = null;
-
+// DELETE STUDENT
+// ======================================================
 
 function deleteStudent(id) {
 
@@ -740,21 +770,19 @@ function deleteStudent(id) {
 
     if (!student) {
 
-        alert("Student not found.");
+        alert("Student NOT FOUND");
 
         return;
 
     }
 
-
     studentToDelete = student;
 
+    const deleteModal =
+        document.getElementById("deleteStudentModal");
 
     const message =
-        document.getElementById(
-            "deleteStudentMessage"
-        );
-
+        document.getElementById("deleteStudentMessage");
 
     if (message) {
 
@@ -763,117 +791,232 @@ function deleteStudent(id) {
 
     }
 
+    if (!deleteModal) {
 
-    const deleteModal =
-        document.getElementById(
-            "deleteStudentModal"
-        );
-     console.log("Delete clicked:", id);
-console.log("Delete modal:", deleteModal);
+        alert("DELETE MODAL NOT FOUND");
 
-    if (deleteModal) {
-
-        deleteModal.classList.add("active");
+        return;
 
     }
 
+    // IMPORTANT
+    deleteModal.style.display = "flex";
+
+    deleteModal.classList.add("active");
+
 }
-
-
 // ======================================================
 // CLOSE DELETE MODAL
 // ======================================================
 
 function closeDeleteModal() {
 
-    const deleteModal =
-        document.getElementById(
-            "deleteStudentModal"
-        );
+    console.log("CLOSE DELETE MODAL");
 
+    const deleteModal =
+        document.getElementById("deleteStudentModal");
 
     if (deleteModal) {
 
-        deleteModal.classList.remove("active");
+    deleteModal.classList.add("active");
+    deleteModal.style.display = "flex";
 
+}
+
+        // Force hide
+        deleteModal.style.display = "none";
     }
 
-
     studentToDelete = null;
+}
+
+// ======================================================
+// SEARCH STUDENTS
+// ======================================================
+
+function searchStudents() {
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    if (!input) return;
+
+
+    const search =
+        input.value
+            .toLowerCase()
+            .trim();
+
+
+    const filtered =
+        students.filter(
+            student => {
+
+                const name =
+                    String(
+                        student.name || ""
+                    ).toLowerCase();
+
+                const email =
+                    String(
+                        student.email || ""
+                    ).toLowerCase();
+
+                const course =
+                    String(
+                        student.course || ""
+                    ).toLowerCase();
+
+                const phone =
+                    String(
+                        student.phone || ""
+                    ).toLowerCase();
+
+
+                return (
+                    name.includes(search) ||
+                    email.includes(search) ||
+                    course.includes(search) ||
+                    phone.includes(search)
+                );
+
+            }
+        );
+
+
+    displayStudents(filtered);
 
 }
 
 
 // ======================================================
-// CONFIRM DELETE STUDENT
+// FILTER BY COURSE
 // ======================================================
 
-async function confirmDeleteStudent() {
+function filterStudents() {
 
-    if (!studentToDelete) {
+    const filter =
+        document.getElementById(
+            "courseFilter"
+        );
+
+
+    if (!filter) return;
+
+
+    const value =
+        filter.value;
+
+
+    if (value === "all") {
+
+        displayStudents(
+            students
+        );
 
         return;
 
     }
 
 
-    const id =
-        studentToDelete._id;
-
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_URL}/${id}`,
-                {
-                    method: "DELETE"
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            alert(
-                result.message ||
-                "Unable to delete student."
-            );
-
-            return;
-
-        }
-
-
-        closeDeleteModal();
-
-
-        await loadStudents();
-
-
-        showToast(
-            "Student deleted successfully!"
+    const filtered =
+        students.filter(
+            student =>
+                student.course === value
         );
 
 
-    } catch (error) {
+    displayStudents(
+        filtered
+    );
 
-        console.error(
-            "Delete error:",
-            error
+}
+
+
+// ======================================================
+// SORT STUDENTS
+// ======================================================
+
+function sortStudents() {
+
+    const sortFilter =
+        document.getElementById(
+            "sortFilter"
         );
 
 
-        alert(
-            "Backend connection failed."
+    if (!sortFilter) return;
+
+
+    const value =
+        sortFilter.value;
+
+
+    let sorted =
+        [...students];
+
+
+    if (value === "nameAsc") {
+
+        sorted.sort(
+            (a, b) =>
+                String(a.name)
+                    .localeCompare(
+                        String(b.name)
+                    )
         );
 
     }
 
+
+    if (value === "nameDesc") {
+
+        sorted.sort(
+            (a, b) =>
+                String(b.name)
+                    .localeCompare(
+                        String(a.name)
+                    )
+        );
+
+    }
+
+
+    if (value === "courseAsc") {
+
+        sorted.sort(
+            (a, b) =>
+                String(a.course)
+                    .localeCompare(
+                        String(b.course)
+                    )
+        );
+
+    }
+
+
+    if (value === "courseDesc") {
+
+        sorted.sort(
+            (a, b) =>
+                String(b.course)
+                    .localeCompare(
+                        String(a.course)
+                    )
+        );
+
+    }
+
+
+    displayStudents(
+        sorted
+    );
+
 }
+
 
 // ======================================================
 // ESCAPE HTML
@@ -881,7 +1024,7 @@ async function confirmDeleteStudent() {
 
 function escapeHTML(value) {
 
-    return String(value)
+    return String(value ?? "")
 
         .replace(
             /&/g,
@@ -911,25 +1054,8 @@ function escapeHTML(value) {
 }
 
 
-function escapeAttribute(value) {
-
-    return String(value)
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
 // ======================================================
-// CLOSE MODAL BY CLICKING OUTSIDE
+// CLOSE ADD MODAL OUTSIDE CLICK
 // ======================================================
 
 window.addEventListener(
@@ -962,36 +1088,65 @@ window.addEventListener(
 
             closeForm();
 
+            closeEditForm();
+
+            closeDeleteModal();
+
         }
 
     }
-); 
+);
+
 
 // ======================================================
-// TOAST NOTIFICATION
+// TOAST
 // ======================================================
 
 function showToast(message) {
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
     const toastMessage =
-        document.getElementById("toastMessage");
+        document.getElementById(
+            "toastMessage"
+        );
 
-    if (!toast || !toastMessage) return;
 
-    toastMessage.textContent = message;
+    if (
+        !toast ||
+        !toastMessage
+    ) {
 
-    toast.classList.add("show");
+        return;
 
-    setTimeout(() => {
+    }
 
-        toast.classList.remove("show");
 
-    }, 3000);
+    toastMessage.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        3000
+    );
 
 }
+
 
 // ======================================================
 // START APPLICATION
