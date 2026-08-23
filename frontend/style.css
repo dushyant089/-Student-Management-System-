@@ -986,6 +986,188 @@ tbody tr:hover {
 
     animation: modalIn 0.2s ease;
 }
+/* ======================================================
+   EDIT STUDENT MODAL
+====================================================== */
+
+#editStudentModal {
+    display: none;
+}
+
+#editStudentModal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Modal Box */
+
+#editStudentModal .modal-box {
+    width: min(500px, 92%);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+
+/* Close Button */
+
+#editStudentModal .close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f1f5f9;
+    color: #475569;
+
+    font-size: 24px;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+#editStudentModal .close:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* Modal Title */
+
+#editStudentModal .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 25px;
+    padding-right: 35px;
+}
+
+
+#editStudentModal .modal-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eef2ff;
+    font-size: 22px;
+}
+
+
+#editStudentModal .modal-title h2 {
+    margin: 0 0 4px;
+}
+
+
+#editStudentModal .modal-title p {
+    margin: 0;
+
+    color: #64748b;
+    font-size: 14px;
+}
+
+
+/* Form */
+
+#editStudentModal .form-group {
+    margin-bottom: 18px;
+}
+
+
+#editStudentModal .form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-weight: 600;
+    color: #334155;
+}
+
+
+#editStudentModal .form-group input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 15px;
+
+    transition: 0.2s ease;
+}
+
+
+#editStudentModal .form-group input:focus {
+    border-color: #6366f1;
+
+    box-shadow:
+        0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+
+/* Buttons */
+
+#editStudentModal .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+
+#editStudentModal .modal-buttons button {
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+#editStudentModal .cancel {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+
+#editStudentModal .cancel:hover {
+    background: #e2e8f0;
+}
+
+
+#editStudentModal .save {
+    background: #6366f1;
+    color: white;
+}
+
+
+#editStudentModal .save:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+}
 
 @keyframes modalIn {
 
@@ -1329,4 +1511,63 @@ tbody tr:hover {
         padding: 22px;
     }
 
+}   
+/* =========================================
+   TOAST NOTIFICATION
+========================================= */
+
+.toast {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    min-width: 280px;
+
+    padding: 14px 18px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-left: 4px solid #16a34a;
+
+    border-radius: 10px;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    transform: translateX(120%);
+    opacity: 0;
+
+    transition: all 0.3s ease;
+
+    z-index: 2000;
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#toastIcon {
+    width: 24px;
+    height: 24px;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    color: #16a34a;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
 }
