@@ -768,7 +768,8 @@ function deleteStudent(id) {
         document.getElementById(
             "deleteStudentModal"
         );
-
+     console.log("Delete clicked:", id);
+console.log("Delete modal:", deleteModal);
 
     if (deleteModal) {
 
